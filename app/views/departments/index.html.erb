@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <ul class="list-group">
+        <% @departments.each do |department| %>
+            <li class="list-group-item department" data-lat="<%= department.latitude %>" data-lng="<%= department.longitude %>">
+              <%= department.address %>
+            </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="cod-sm-9">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function showDepartmentMarked(position) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: position
+        });
+
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: 'Rent Department'
+        });
+    }
+
+    $('.department').click(function () {
+        $('.department.active').removeClass('active');
+        $(this).addClass('active');
+
+        var departmentPosition = {
+            lat: $(this).data("lat"),
+            lng: $(this).data("lng")
+        };
+
+        showDepartmentMarked(departmentPosition);
+    });
+
+    function initMap() {
+        var activeDepartment = $('.department:first');
+        activeDepartment.addClass('active');
+
+        var departmentPosition = {lat: activeDepartment.data("lat"), lng: activeDepartment.data("lng")};
+
+        showDepartmentMarked(departmentPosition);
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASGLtRadC0ezm5PQX-rz3NvjbS7rS7V8g&callback=initMap">
+</script>

@@ -42,8 +42,8 @@ class Department < ApplicationRecord
     res_location = response['results']&.first.dig('geometry', 'location')
     return unless res_location.present?
 
-    self.latitude = res_location['lng']
-    self.longitude = res_location['lat']
+    self.latitude = res_location['lat']
+    self.longitude = res_location['lng']
     save
   rescue JSON::ParserError
     nil
